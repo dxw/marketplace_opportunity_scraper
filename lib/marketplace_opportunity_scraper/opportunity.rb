@@ -29,6 +29,16 @@ module MarketplaceOpportunityScraper
       opportunities.map { |o| opportunity_from_search_result(o) }
     end
 
+    def self.mechanize
+      @@mechanize ||= Mechanize.new
+    end
+
+    private
+
+    def self.get_date(date)
+      DateTime.parse date.text.split(':').last
+    end
+
     def self.opportunity_from_search_result(element)
       title = element.at('.search-result-title')
       important_metadata = element.search('ul.search-result-important-metadata li')
@@ -48,16 +58,6 @@ module MarketplaceOpportunityScraper
       }
 
       new(attrs)
-    end
-
-    def self.mechanize
-      @@mechanize ||= Mechanize.new
-    end
-
-    private
-
-    def self.get_date(date)
-      DateTime.parse date.text.split(':').last
     end
   end
 end
