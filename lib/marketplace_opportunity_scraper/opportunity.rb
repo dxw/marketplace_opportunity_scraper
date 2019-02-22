@@ -1,7 +1,9 @@
 module MarketplaceOpportunityScraper
   class Opportunity
-    BASE_URL = 'https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities'
+    BASE_URL = 'https://www.digitalmarketplace.service.gov.uk'
     ATTTIBUTES = %i[
+      id
+      url
       title
       buyer
       location
@@ -20,7 +22,7 @@ module MarketplaceOpportunityScraper
     end
 
     def self.all
-      url = BASE_URL + '?q=&statusOpenClosed=open'
+      url = BASE_URL + '/digital-outcomes-and-specialists/opportunities?q=&statusOpenClosed=open'
       page = mechanize.get(url)
       opportunities = page.search('.search-result')
 
@@ -28,11 +30,15 @@ module MarketplaceOpportunityScraper
     end
 
     def self.opportunity_from_search_result(element)
+      title = element.at('.search-result-title')
       important_metadata = element.search('ul.search-result-important-metadata li')
       dates = element.search('ul.search-result-metadata')[1].search('li')
+      url = BASE_URL + title.at('a').attributes['href'].value
 
       attrs = {
-        title: element.at('.search-result-title').text.strip,
+        id: url.split('/').last.to_i,
+        title: title.text.strip,
+        url: url,
         buyer: important_metadata[0].text.strip,
         location: important_metadata[1].text.strip,
         published: get_date(dates[0]),
