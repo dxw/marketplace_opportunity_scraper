@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe MarketplaceOpportunityScraper::Opportunity do
+describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
   describe '#all' do
     subject { described_class.all }
