@@ -29,6 +29,10 @@ module MarketplaceOpportunityScraper
       opportunities.map { |o| opportunity_from_search_result(o) }
     end
 
+    def self.find(id)
+      opportunity_from_id(id)
+    end
+
     def self.mechanize
       @@mechanize ||= Mechanize.new
     end
@@ -36,7 +40,28 @@ module MarketplaceOpportunityScraper
     private
 
     def self.get_date(date)
-      DateTime.parse date.text.split(':').last
+      Date.parse date.text.split(':').last
+    end
+
+    def self.opportunity_from_id(id)
+      url = BASE_URL + '/digital-outcomes-and-specialists/opportunities/' + id.to_s
+      page = mechanize.get(url)
+
+      title = page.at('h1')
+
+      attrs = {
+        id: id,
+        title: title.text.strip,
+        url: url,
+        buyer: page.at('.context').text,
+        location: find_by_label(page, 'Location'),
+        published: Date.parse(find_by_label(page, 'Published')),
+        question_deadline: Date.parse(find_by_label(page, 'Deadline for asking questions')),
+        closing: Date.parse(find_by_label(page, 'Closing date for applications')),
+        description: find_by_label(page, 'Summary of the work'),
+      }
+
+      new(attrs)
     end
 
     def self.opportunity_from_search_result(element)
@@ -58,6 +83,11 @@ module MarketplaceOpportunityScraper
       }
 
       new(attrs)
+    end
+
+    def self.find_by_label(page, label)
+      selector = "//td[@class='summary-item-field-first']/span[text()='#{label}']/../../td[@class='summary-item-field']"
+      page.search(selector).text.strip
     end
   end
 end
