@@ -3,6 +3,7 @@ $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'marketplace_opportunity_scraper'
 
 require 'support/vcr'
+require 'pry'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|

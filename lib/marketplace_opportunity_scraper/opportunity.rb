@@ -19,6 +19,11 @@ module MarketplaceOpportunityScraper
       ATTRIBUTES.each do |a|
         instance_variable_set("@#{a}", attrs[a])
       end
+      @page = attrs[:page]
+    end
+
+    def budget
+      find_by_label('Budget range')
     end
 
     def self.all
@@ -50,6 +55,7 @@ module MarketplaceOpportunityScraper
       title = page.at('h1')
 
       attrs = {
+        page: page,
         id: id,
         title: title.text.strip,
         url: url,
@@ -88,6 +94,14 @@ module MarketplaceOpportunityScraper
     def self.find_by_label(page, label)
       selector = "//td[@class='summary-item-field-first']/span[text()='#{label}']/../../td[@class='summary-item-field']"
       page.search(selector).text.strip
+    end
+
+    def find_by_label(label)
+      self.class.send(:find_by_label, *[page, label])
+    end
+
+    def page
+      @page ||= @@mechanize.get(@url)
     end
   end
 end

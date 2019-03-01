@@ -4,6 +4,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
   describe '#all' do
     subject { described_class.all }
+    let(:opportunity) { subject.first }
 
     it 'returns all open opportunities' do
       expect(subject.first).to be_a(described_class)
@@ -11,8 +12,6 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
     end
 
     it 'gets the correct opportunity data' do
-      opportunity = subject.first
-
       expect(opportunity.id).to eq(9142)
       expect(opportunity.url).to eq('https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/9142')
       expect(opportunity.title).to eq('Development of  an online electronic Research Application submission and review Portal (eRAP)')
@@ -22,6 +21,10 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(opportunity.question_deadline).to eq(Date.parse('2019-03-01'))
       expect(opportunity.closing).to eq(Date.parse('2019-03-08'))
       expect(opportunity.description).to match(/anonymised health care data/)
+    end
+
+    it 'gets data that is not on the homepage' do
+      expect(opportunity.budget).to match(/£100,000/)
     end
   end
 
@@ -38,6 +41,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(subject.question_deadline).to eq(Date.parse('2019-03-01'))
       expect(subject.closing).to eq(Date.parse('2019-03-08'))
       expect(subject.description).to match(/anonymised health care data/)
+      expect(subject.budget).to match(/£100,000/)
     end
   end
 
