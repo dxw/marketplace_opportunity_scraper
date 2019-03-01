@@ -25,6 +25,9 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
     it 'gets data that is not on the homepage' do
       expect(opportunity.budget).to match(/£100,000/)
+      expect(opportunity.skills.count).to eq(10)
+      expect(opportunity.skills.first).to eq('Proven experience building easy-to-use web-based applications')
+      expect(opportunity.skills.last).to eq('Have availability of resources to be able to start as soon as possible')
     end
   end
 
@@ -42,6 +45,9 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(subject.closing).to eq(Date.parse('2019-03-08'))
       expect(subject.description).to match(/anonymised health care data/)
       expect(subject.budget).to match(/£100,000/)
+      expect(subject.skills.count).to eq(10)
+      expect(subject.skills.first).to eq('Proven experience building easy-to-use web-based applications')
+      expect(subject.skills.last).to eq('Have availability of resources to be able to start as soon as possible')
     end
   end
 

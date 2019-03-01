@@ -23,7 +23,12 @@ module MarketplaceOpportunityScraper
     end
 
     def budget
-      find_by_label('Budget range')
+      text_from_label('Budget range')
+    end
+
+    def skills
+      list = find_by_label('Essential skills and experience').search('li')
+      list.map { |li| li.text.strip }
     end
 
     def self.all
@@ -60,11 +65,11 @@ module MarketplaceOpportunityScraper
         title: title.text.strip,
         url: url,
         buyer: page.at('.context').text,
-        location: find_by_label(page, 'Location'),
-        published: Date.parse(find_by_label(page, 'Published')),
-        question_deadline: Date.parse(find_by_label(page, 'Deadline for asking questions')),
-        closing: Date.parse(find_by_label(page, 'Closing date for applications')),
-        description: find_by_label(page, 'Summary of the work'),
+        location: text_from_label(page, 'Location'),
+        published: Date.parse(text_from_label(page, 'Published')),
+        question_deadline: Date.parse(text_from_label(page, 'Deadline for asking questions')),
+        closing: Date.parse(text_from_label(page, 'Closing date for applications')),
+        description: text_from_label(page, 'Summary of the work'),
       }
 
       new(attrs)
@@ -91,13 +96,21 @@ module MarketplaceOpportunityScraper
       new(attrs)
     end
 
+    def self.text_from_label(page, label)
+      find_by_label(page, label).text.strip
+    end
+
     def self.find_by_label(page, label)
       selector = "//td[@class='summary-item-field-first']/span[text()='#{label}']/../../td[@class='summary-item-field']"
-      page.search(selector).text.strip
+      page.search(selector)
     end
 
     def find_by_label(label)
       self.class.send(:find_by_label, *[page, label])
+    end
+
+    def text_from_label(label)
+      self.class.send(:text_from_label, *[page, label])
     end
 
     def page
