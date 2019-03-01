@@ -1,7 +1,7 @@
 module MarketplaceOpportunityScraper
   class Opportunity
     BASE_URL = 'https://www.digitalmarketplace.service.gov.uk'
-    ATTTIBUTES = %i[
+    ATTRIBUTES = %i[
       id
       url
       title
@@ -13,10 +13,10 @@ module MarketplaceOpportunityScraper
       description
     ]
 
-    attr_reader *ATTTIBUTES
+    attr_reader *ATTRIBUTES
 
     def initialize(attrs)
-      ATTTIBUTES.each do |a|
+      ATTRIBUTES.each do |a|
         instance_variable_set("@#{a}", attrs[a])
       end
     end
