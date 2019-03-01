@@ -1,3 +1,7 @@
+[![CircleCI Status](https://img.shields.io/circleci/project/github/dxw/marketplace_opportunity_scraper.svg?style=flat-square)](https://circleci.com/gh/dxw/marketplace_opportunity_scraper)
+[![Gem Version](http://img.shields.io/gem/v/marketplace_opportunity_scraper.svg?style=flat-square)](https://rubygems.org/gems/marketplace_opportunity_scraper)
+[![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
+
 # Marketplace Opportunity Scraper
 
 A Ruby gem that fetches the latest opportunities from the [Gov.uk Digital Marketplace](https://www.digitalmarketplace.service.gov.uk/).
