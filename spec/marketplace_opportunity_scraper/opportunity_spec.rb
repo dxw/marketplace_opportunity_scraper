@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe MarketplaceOpportunityScraper::Opportunity, :vcr do
-
   describe '#all' do
     subject { described_class.all }
     let(:opportunity) { subject.first }
@@ -50,5 +51,4 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(subject.skills.last).to eq('Have availability of resources to be able to start as soon as possible')
     end
   end
-
 end

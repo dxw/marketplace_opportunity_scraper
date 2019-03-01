@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MarketplaceOpportunityScraper
   class Opportunity
     BASE_URL = 'https://www.digitalmarketplace.service.gov.uk'
@@ -11,7 +13,7 @@ module MarketplaceOpportunityScraper
       question_deadline
       closing
       description
-    ]
+    ].freeze
 
     attr_reader *ATTRIBUTES
 
@@ -69,7 +71,7 @@ module MarketplaceOpportunityScraper
         published: Date.parse(text_from_label(page, 'Published')),
         question_deadline: Date.parse(text_from_label(page, 'Deadline for asking questions')),
         closing: Date.parse(text_from_label(page, 'Closing date for applications')),
-        description: text_from_label(page, 'Summary of the work'),
+        description: text_from_label(page, 'Summary of the work')
       }
 
       new(attrs)
@@ -106,11 +108,11 @@ module MarketplaceOpportunityScraper
     end
 
     def find_by_label(label)
-      self.class.send(:find_by_label, *[page, label])
+      self.class.send(:find_by_label, page, label)
     end
 
     def text_from_label(label)
-      self.class.send(:text_from_label, *[page, label])
+      self.class.send(:text_from_label, page, label)
     end
 
     def page

@@ -1,8 +1,15 @@
+PATH
+  remote: .
+  specs:
+    marketplace_opportunity_scraper (0.0.1)
+      mechanize (~> 2.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    ast (2.4.0)
     coderay (1.1.2)
     connection_pool (2.2.2)
     crack (0.4.3)
@@ -13,6 +20,7 @@ GEM
     hashdiff (0.3.8)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    jaro_winkler (1.5.2)
     mechanize (2.7.6)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
@@ -33,11 +41,17 @@ GEM
     nokogiri (1.10.1)
       mini_portile2 (~> 2.4.0)
     ntlm-http (0.1.1)
+    parallel (1.14.0)
+    parser (2.6.0.0)
+      ast (~> 2.4.0)
+    powerpack (0.1.2)
     pry (0.12.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
+    psych (3.1.0)
     public_suffix (3.0.3)
-    rake (12.3.2)
+    rainbow (3.0.0)
+    rake (10.5.0)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -51,10 +65,21 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    rubocop (0.65.0)
+      jaro_winkler (~> 1.5.1)
+      parallel (~> 1.10)
+      parser (>= 2.5, != 2.5.1.1)
+      powerpack (~> 0.1)
+      psych (>= 3.1.0)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.4.0)
+    ruby-progressbar (1.10.0)
     safe_yaml (1.0.4)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    unicode-display_width (1.4.1)
     vcr (4.0.0)
     webmock (3.5.1)
       addressable (>= 2.3.6)
@@ -66,12 +91,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mechanize
-  pry
-  rake
-  rspec
-  vcr
-  webmock
+  bundler (~> 2.0)
+  marketplace_opportunity_scraper!
+  pry (~> 0.12.0)
+  rake (~> 10.0)
+  rspec (~> 3.0)
+  rubocop (~> 0.63)
+  vcr (~> 4.0)
+  webmock (~> 3.5)
 
 BUNDLED WITH
    2.0.1
