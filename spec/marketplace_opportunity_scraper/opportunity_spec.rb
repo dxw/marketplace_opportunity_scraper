@@ -21,6 +21,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(opportunity.published).to eq(Date.parse('2019-02-22'))
       expect(opportunity.question_deadline).to eq(Date.parse('2019-03-01'))
       expect(opportunity.closing).to eq(Date.parse('2019-03-08'))
+      expect(opportunity.expected_start_date).to eq(Date.parse('2019-06-03'))
       expect(opportunity.description).to match(/anonymised health care data/)
     end
 

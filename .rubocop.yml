@@ -5,4 +5,4 @@ Metrics/BlockLength:
    - 'spec/**/*'
 
 Metrics/ClassLength:
-  Max: 103
+  Max: 105

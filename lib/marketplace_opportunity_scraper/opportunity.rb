@@ -13,6 +13,7 @@ module MarketplaceOpportunityScraper
       question_deadline
       closing
       description
+      expected_start_date
     ].freeze
 
     attr_reader *ATTRIBUTES
@@ -62,10 +63,6 @@ module MarketplaceOpportunityScraper
       ['digital-outcomes', 'digital-specialists', 'user-research-participants']
     end
 
-    def self.get_date(date)
-      Date.parse date.text.split(':').last
-    end
-
     def self.opportunity_from_id(id)
       url = BASE_URL + '/digital-outcomes-and-specialists/opportunities/' + id.to_s
       page = mechanize.get(url)
@@ -82,6 +79,7 @@ module MarketplaceOpportunityScraper
         published: Date.parse(text_from_label(page, 'Published')),
         question_deadline: Date.parse(text_from_label(page, 'Deadline for asking questions')),
         closing: Date.parse(text_from_label(page, 'Closing date for applications')),
+        expected_start_date: Date.parse(text_from_label(page, 'Latest start date')),
         description: text_from_label(page, 'Summary of the work')
       }
 
@@ -90,23 +88,9 @@ module MarketplaceOpportunityScraper
 
     def self.opportunity_from_search_result(element)
       title = element.at('.search-result-title')
-      important_metadata = element.search('ul.search-result-important-metadata li')
-      dates = element.search('ul.search-result-metadata')[1].search('li')
       url = BASE_URL + title.at('a').attributes['href'].value
 
-      attrs = {
-        id: url.split('/').last.to_i,
-        title: title.text.strip,
-        url: url,
-        buyer: important_metadata[0].text.strip,
-        location: important_metadata[1].text.strip,
-        published: get_date(dates[0]),
-        question_deadline: get_date(dates[1]),
-        closing: get_date(dates[2]),
-        description: element.at('.search-result-excerpt').text.strip
-      }
-
-      new(attrs)
+      opportunity_from_id(url.split('/').last.to_i)
     end
 
     def self.text_from_label(page, label)
