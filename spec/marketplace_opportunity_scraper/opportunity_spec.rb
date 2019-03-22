@@ -30,6 +30,23 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(opportunity.skills.first).to eq('Proven experience building easy-to-use web-based applications')
       expect(opportunity.skills.last).to eq('Have availability of resources to be able to start as soon as possible')
     end
+
+    context 'when type is specified' do
+      subject { described_class.all('digital-outcomes') }
+
+      it 'returns the correct opportunities' do
+        expect(subject.first).to be_a(described_class)
+        expect(subject.count).to eq(20)
+      end
+    end
+
+    context 'when and invalid type is specified' do
+      subject { described_class.all('not-a-type') }
+
+      it 'returns the correct opportunities' do
+        expect { subject }.to raise_error(ArgumentError)
+      end
+    end
   end
 
   describe '#find' do

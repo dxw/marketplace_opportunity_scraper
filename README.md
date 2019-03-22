@@ -46,7 +46,13 @@ opportunities.each do |o|
 end
 ```
 
-or you can get an opportunity by its ID:
+Or you can get opportunities with a specific type (`digital-outcomes`, `digital-specialists` or `user-research-participants`):
+
+```ruby
+opportunities = MarketplaceOpportunityScraper::Opportunity.all('digital-outcomes)
+```
+
+You can also get an opportunity by its ID:
 
 ```ruby
 require 'marketplace_opportunity_scraper'

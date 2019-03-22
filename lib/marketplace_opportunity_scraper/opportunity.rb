@@ -33,8 +33,10 @@ module MarketplaceOpportunityScraper
       list.map { |li| li.text.strip }
     end
 
-    def self.all
+    def self.all(type = nil)
+      check_type(type)
       url = BASE_URL + '/digital-outcomes-and-specialists/opportunities?q=&statusOpenClosed=open'
+      url += "&lot=#{type}" unless type.nil?
       page = mechanize.get(url)
       opportunities = page.search('.search-result')
 
@@ -50,6 +52,15 @@ module MarketplaceOpportunityScraper
     end
 
     private
+
+    def self.check_type(type)
+      return if type.nil?
+      raise(ArgumentError, "#{type} is not a valid type. Must be one of #{valid_types.join(' ')}") unless valid_types.include?(type)
+    end
+
+    def self.valid_types
+      ['digital-outcomes', 'digital-specialists', 'user-research-participants']
+    end
 
     def self.get_date(date)
       Date.parse date.text.split(':').last
