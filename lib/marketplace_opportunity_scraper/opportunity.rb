@@ -93,8 +93,31 @@ module MarketplaceOpportunityScraper
       self.class.send(:text_from_label, page, label)
     end
 
+    def status
+      return 'open' if banner.nil?
+      return 'cancelled' if banner.text =~ /cancelled/
+      return 'awaiting' if banner.text =~ /closed for applications/
+
+      'awarded'
+    end
+
+    def awarded_to
+      return if banner.nil?
+
+      text = banner.at('h2').text
+      return unless text =~ /Awarded to/
+
+      text.gsub('Awarded to ', '').strip
+    end
+
     def page
       @page ||= @@mechanize.get(@url)
+    end
+
+    private
+
+    def banner
+      @banner ||= page.at('.banner-temporary-message-without-action')
     end
   end
 end

@@ -86,4 +86,54 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(subject.skills.last).to eq('Have availability of resources to be able to start as soon as possible')
     end
   end
+
+  describe '#status' do
+    let(:status) { opportunity.status }
+
+    context 'when an opportunity is still open' do
+      let(:opportunity) { described_class.find(9482) }
+
+      it { expect(status).to eq('open') }
+    end
+
+    context 'when an opportunity is awaiting' do
+      let(:opportunity) { described_class.find(9383) }
+
+      it { expect(status).to eq('awaiting') }
+    end
+
+    context 'when an opportunity is cancelled' do
+      let(:opportunity) { described_class.find(9242) }
+
+      it { expect(status).to eq('cancelled') }
+    end
+
+    context 'when an opportunity has been awarded' do
+      let(:opportunity) { described_class.find(9115) }
+
+      it { expect(status).to eq('awarded') }
+    end
+  end
+
+  describe '#awarded_to' do
+    let(:awarded_to) { opportunity.awarded_to }
+
+    context 'when an opportunity has been awarded' do
+      let(:opportunity) { described_class.find(9115) }
+
+      it { expect(awarded_to).to eq('Atkins Limited') }
+    end
+
+    context 'when an opportunity has not been awarded' do
+      let(:opportunity) { described_class.find(9242) }
+
+      it { expect(awarded_to).to eq(nil) }
+    end
+
+    context 'when an opportunity is still open' do
+      let(:opportunity) { described_class.find(9482) }
+
+      it { expect(awarded_to).to eq(nil) }
+    end
+  end
 end
