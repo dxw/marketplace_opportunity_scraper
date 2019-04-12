@@ -34,14 +34,21 @@ module MarketplaceOpportunityScraper
       list.map { |li| li.text.strip }
     end
 
-    def self.all(type = nil)
-      check_type(type)
-      url = BASE_URL + '/digital-outcomes-and-specialists/opportunities?q=&statusOpenClosed=open'
-      url += "&lot=#{type}" unless type.nil?
+    def self.all(type: nil, status: 'open')
+      url = build_url(type, status)
       page = mechanize.get(url)
       opportunities = page.search('.search-result')
 
       opportunities.map { |o| opportunity_from_search_result(o) }
+    end
+
+    def self.build_url(type, status)
+      check_type(type)
+      check_status(status)
+      url = BASE_URL + '/digital-outcomes-and-specialists/opportunities'
+      h = { type: type, statusOpenClosed: status }.reject { |k,v| v.nil? }
+      params = URI.encode_www_form(h)
+      "#{url}?#{params}"
     end
 
     def self.find(id)
@@ -54,13 +61,27 @@ module MarketplaceOpportunityScraper
 
     private
 
+    def self.check_params(param, type)
+      return if param.nil?
+
+      valid_array = send("valid_#{type}")
+      raise(ArgumentError, "#{param} is not a valid #{type}. Must be one of #{valid_array.join(' ')}") unless valid_array.include?(param)
+    end
+
     def self.check_type(type)
-      return if type.nil?
-      raise(ArgumentError, "#{type} is not a valid type. Must be one of #{valid_types.join(' ')}") unless valid_types.include?(type)
+      check_params(type, 'types')
+    end
+
+    def self.check_status(status)
+      check_params(status, 'statuses')
     end
 
     def self.valid_types
-      ['digital-outcomes', 'digital-specialists', 'user-research-participants']
+      %w[digital-outcomes digital-specialists user-research-participants]
+    end
+
+    def self.valid_statuses
+      %w[open closed]
     end
 
     def self.opportunity_from_id(id)
@@ -76,10 +97,10 @@ module MarketplaceOpportunityScraper
         url: url,
         buyer: page.at('.context').text,
         location: text_from_label(page, 'Location'),
-        published: Date.parse(text_from_label(page, 'Published')),
-        question_deadline: Date.parse(text_from_label(page, 'Deadline for asking questions')),
-        closing: Date.parse(text_from_label(page, 'Closing date for applications')),
-        expected_start_date: Date.parse(text_from_label(page, 'Latest start date')),
+        published: date_from_label(page, 'Published'),
+        question_deadline: date_from_label(page, 'Deadline for asking questions'),
+        closing: date_from_label(page, 'Closing date for applications'),
+        expected_start_date: date_from_label(page, 'Latest start date'),
         description: text_from_label(page, 'Summary of the work')
       }
 
@@ -95,6 +116,10 @@ module MarketplaceOpportunityScraper
 
     def self.text_from_label(page, label)
       find_by_label(page, label).text.strip
+    end
+
+    def self.date_from_label(page, label)
+      Date.parse(text_from_label(page, label)) rescue nil
     end
 
     def self.find_by_label(page, label)

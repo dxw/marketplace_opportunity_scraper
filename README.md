@@ -49,7 +49,13 @@ end
 Or you can get opportunities with a specific type (`digital-outcomes`, `digital-specialists` or `user-research-participants`):
 
 ```ruby
-opportunities = MarketplaceOpportunityScraper::Opportunity.all('digital-outcomes)
+opportunities = MarketplaceOpportunityScraper::Opportunity.all(type: 'digital-outcomes')
+```
+
+By default, the scraper gets only open opportunities, but you can get closed ones too:
+
+```ruby
+opportunities = MarketplaceOpportunityScraper::Opportunity.all(status: 'closed')
 ```
 
 You can also get an opportunity by its ID:
