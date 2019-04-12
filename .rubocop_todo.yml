@@ -42,6 +42,7 @@ Style/Documentation:
     - 'spec/**/*'
     - 'test/**/*'
     - 'lib/marketplace_opportunity_scraper.rb'
+    - 'lib/marketplace_opportunity_scraper/utils.rb'
     - 'lib/marketplace_opportunity_scraper/opportunity.rb'
 
 # Offense count: 17
