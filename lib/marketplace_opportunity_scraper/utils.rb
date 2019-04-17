@@ -8,7 +8,7 @@ module MarketplaceOpportunityScraper
       check_type(type)
       check_status(status)
       url = BASE_URL + '/digital-outcomes-and-specialists/opportunities'
-      h = { type: type, statusOpenClosed: status }.reject { |_k, v| v.nil? }
+      h = { lot: type, statusOpenClosed: status }.reject { |_k, v| v.nil? }
       params = URI.encode_www_form(h)
       "#{url}?#{params}"
     end

@@ -37,7 +37,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
       it 'returns the correct opportunities' do
         expect(subject.first).to be_a(described_class)
-        expect(subject.count).to eq(20)
+        expect(subject.count).to eq(14)
       end
     end
 
