@@ -56,7 +56,7 @@ module MarketplaceOpportunityScraper
           id: id,
           title: title.text.strip,
           url: url,
-          buyer: page.at('.context').text,
+          buyer: page.at('.govuk-caption-l').text,
           location: text_from_label(page, 'Location'),
           published: date_from_label(page, 'Published'),
           question_deadline: date_from_label(page, 'Deadline for asking questions'),

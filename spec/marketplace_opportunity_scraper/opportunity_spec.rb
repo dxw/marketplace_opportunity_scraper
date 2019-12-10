@@ -9,27 +9,27 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
     it 'returns all open opportunities' do
       expect(subject.first).to be_a(described_class)
-      expect(subject.count).to eq(20)
+      expect(subject.count).to eq(26)
     end
 
     it 'gets the correct opportunity data' do
-      expect(opportunity.id).to eq(9482)
-      expect(opportunity.url).to eq('https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/9482')
-      expect(opportunity.title).to eq('National Careers Service Digital Developments')
-      expect(opportunity.buyer).to eq('Education and Skills Funding Agency')
-      expect(opportunity.location).to eq('West Midlands')
-      expect(opportunity.published).to eq(Date.parse('2019-04-12'))
-      expect(opportunity.question_deadline).to eq(Date.parse('2019-04-19'))
-      expect(opportunity.closing).to eq(Date.parse('2019-04-26'))
-      expect(opportunity.expected_start_date).to eq(Date.parse('2019-06-03'))
-      expect(opportunity.description).to match(/digital development services/)
+      expect(opportunity.id).to eq(11_371)
+      expect(opportunity.url).to eq('https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/11371')
+      expect(opportunity.title).to eq('WP1845: Global Digital Marketplace procurement/ beneficial ownership transparency - discovery/ alpha')
+      expect(opportunity.buyer).to eq('Government Digital Service (GDS, part of the Cabinet Office)/ Foreign & Commonwealth Office (FCO)')
+      expect(opportunity.location).to eq('No specific location, eg they can work remotely')
+      expect(opportunity.published).to eq(Date.parse('2019-12-09'))
+      expect(opportunity.question_deadline).to eq(Date.parse('2019-12-16'))
+      expect(opportunity.closing).to eq(Date.parse('2019-12-23'))
+      expect(opportunity.expected_start_date).to eq(Date.parse('2020-02-10'))
+      expect(opportunity.description).to match(/Building on work planned or underway/)
     end
 
     it 'gets data that is not on the homepage' do
-      expect(opportunity.budget).to match(/8.2 million/)
-      expect(opportunity.skills.count).to eq(16)
-      expect(opportunity.skills.first).to eq('Provide a multidisciplinary complete team able to run a digital development through to completion')
-      expect(opportunity.skills.last).to eq('Knowledge and experience working with Browserstack and Selenium')
+      expect(opportunity.budget).to match(/£312,000/)
+      expect(opportunity.skills.count).to eq(5)
+      expect(opportunity.skills.first).to eq('Technical knowledge of relevant data standards (OCDS and BODS).')
+      expect(opportunity.skills.last).to match(/understanding of working with and/)
     end
 
     context 'when type is specified' do
@@ -37,7 +37,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
       it 'returns the correct opportunities' do
         expect(subject.first).to be_a(described_class)
-        expect(subject.count).to eq(14)
+        expect(subject.count).to eq(22)
       end
     end
 
@@ -91,19 +91,19 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
     let(:status) { opportunity.status }
 
     context 'when an opportunity is still open' do
-      let(:opportunity) { described_class.find(9482) }
+      let(:opportunity) { described_class.find(11_371) }
 
       it { expect(status).to eq('open') }
     end
 
     context 'when an opportunity is awaiting' do
-      let(:opportunity) { described_class.find(9383) }
+      let(:opportunity) { described_class.find(11_137) }
 
       it { expect(status).to eq('awaiting') }
     end
 
     context 'when an opportunity is cancelled' do
-      let(:opportunity) { described_class.find(9242) }
+      let(:opportunity) { described_class.find(11_036) }
 
       it { expect(status).to eq('cancelled') }
     end
