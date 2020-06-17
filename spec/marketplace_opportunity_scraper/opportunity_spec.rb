@@ -9,35 +9,36 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
     it "returns all open opportunities" do
       expect(subject.first).to be_a(described_class)
-      expect(subject.count).to eq(26)
+      expect(subject.count).to eq(29)
     end
 
     it "gets the correct opportunity data" do
-      expect(opportunity.id).to eq(11_371)
-      expect(opportunity.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/11371")
-      expect(opportunity.title).to eq("WP1845: Global Digital Marketplace procurement/ beneficial ownership transparency - discovery/ alpha")
-      expect(opportunity.buyer).to eq("Government Digital Service (GDS, part of the Cabinet Office)/ Foreign & Commonwealth Office (FCO)")
-      expect(opportunity.location).to eq("No specific location, eg they can work remotely")
-      expect(opportunity.published).to eq(Date.parse("2019-12-09"))
-      expect(opportunity.question_deadline).to eq(Date.parse("2019-12-16"))
-      expect(opportunity.closing).to eq(Date.parse("2019-12-23"))
-      expect(opportunity.expected_start_date).to eq(Date.parse("2020-02-10"))
-      expect(opportunity.description).to match(/Building on work planned or underway/)
-    end
-
-    it "gets data that is not on the homepage" do
-      expect(opportunity.budget).to match(/£312,000/)
-      expect(opportunity.skills.count).to eq(5)
-      expect(opportunity.skills.first).to eq("Technical knowledge of relevant data standards (OCDS and BODS).")
-      expect(opportunity.skills.last).to match(/understanding of working with and/)
+      expect(opportunity.id).to eq(12544)
+      expect(opportunity.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/12544")
+      expect(opportunity.title).to eq("Principal Developer/ Technical Lead - Law Enforcement and Security for Data Services & Analytics")
+      expect(opportunity.buyer).to eq("Data Service and Analytics (DSA), Home Office")
+      expect(opportunity.location).to eq("London")
+      expect(opportunity.published).to eq(Date.parse("2020-06-17"))
+      expect(opportunity.question_deadline).to eq(Date.parse("2020-06-24"))
+      expect(opportunity.closing).to eq(Date.parse("2020-07-01"))
+      expect(opportunity.expected_start_date).to eq(Date.parse("2020-07-13"))
+      expect(opportunity.description).to match(/senior colleagues to design and build/)
     end
 
     context "when type is specified" do
       subject { described_class.all(type: "digital-outcomes") }
+      let(:opportunity) { subject.first }
 
       it "returns the correct opportunities" do
         expect(subject.first).to be_a(described_class)
-        expect(subject.count).to eq(22)
+        expect(subject.count).to eq(15)
+      end
+
+      it "gets data that is not on the homepage" do
+        expect(opportunity.budget).to match(/£16,000/)
+        expect(opportunity.skills.count).to eq(9)
+        expect(opportunity.skills.first).to eq("Possess demonstrable experience of conducting market testing, user research activities and outputs with a range of audiences and stakeholders.")
+        expect(opportunity.skills.last).to eq("Demonstrate experience of presenting user-friendly research to different audiences, including those with low technical expertise.")
       end
     end
 
@@ -68,22 +69,22 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
   end
 
   describe "#find" do
-    subject { described_class.find(9142) }
+    subject { described_class.find(12500) }
 
     it "gets the correct opportunity data" do
-      expect(subject.id).to eq(9142)
-      expect(subject.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/9142")
-      expect(subject.title).to eq("Development of  an online electronic Research Application submission and review Portal (eRAP)")
-      expect(subject.buyer).to eq("Clinical Practice Research Datalink (CPRD) - Medicines and Healthcare  products Regulatory Agency")
-      expect(subject.location).to eq("London")
-      expect(subject.published).to eq(Date.parse("2019-02-22"))
-      expect(subject.question_deadline).to eq(Date.parse("2019-03-01"))
-      expect(subject.closing).to eq(Date.parse("2019-03-08"))
-      expect(subject.description).to match(/anonymised health care data/)
-      expect(subject.budget).to match(/£100,000/)
-      expect(subject.skills.count).to eq(10)
-      expect(subject.skills.first).to eq("Proven experience building easy-to-use web-based applications")
-      expect(subject.skills.last).to eq("Have availability of resources to be able to start as soon as possible")
+      expect(subject.id).to eq(12500)
+      expect(subject.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/12500")
+      expect(subject.title).to eq("Repairs Online - Technical Alpha")
+      expect(subject.buyer).to eq("City of Lincoln Council")
+      expect(subject.location).to eq("No specific location, eg they can work remotely")
+      expect(subject.published).to eq(Date.parse("2020-06-15"))
+      expect(subject.question_deadline).to eq(Date.parse("2020-06-22"))
+      expect(subject.closing).to eq(Date.parse("2020-06-29"))
+      expect(subject.description).to match(/common service pattern for end-to-end housing repairs/)
+      expect(subject.budget).to match(/£45,000/)
+      expect(subject.skills.count).to eq(5)
+      expect(subject.skills.first).to eq("Technical experience of development and integration options")
+      expect(subject.skills.last).to eq("Share their work freely and openly with the partner organisations and the wider community")
     end
   end
 
@@ -91,13 +92,13 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
     let(:status) { opportunity.status }
 
     context "when an opportunity is still open" do
-      let(:opportunity) { described_class.find(11_371) }
+      let(:opportunity) { described_class.find(12543) }
 
       it { expect(status).to eq("open") }
     end
 
     context "when an opportunity is awaiting" do
-      let(:opportunity) { described_class.find(11_137) }
+      let(:opportunity) { described_class.find(12206) }
 
       it { expect(status).to eq("awaiting") }
     end

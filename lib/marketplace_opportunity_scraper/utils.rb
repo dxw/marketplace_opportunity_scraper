@@ -47,7 +47,7 @@ module MarketplaceOpportunityScraper
     end
 
     def find_by_label(page, label)
-      selector = "//td[@class='summary-item-field-first']/span[text()='#{label}']/../../td[@class='summary-item-field']"
+      selector = "//dt[normalize-space()='#{label}']/../dd"
       page.search(selector)
     end
   end
