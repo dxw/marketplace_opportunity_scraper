@@ -17,7 +17,7 @@ module MarketplaceOpportunityScraper
       expected_start_date
     ].freeze
 
-    attr_reader *ATTRIBUTES
+    attr_reader(*ATTRIBUTES)
 
     def initialize(attrs)
       ATTRIBUTES.each do |a|
@@ -27,10 +27,10 @@ module MarketplaceOpportunityScraper
     end
 
     class << self
-      def all(type: nil, status: 'open')
+      def all(type: nil, status: "open")
         url = build_url(type, status)
         page = mechanize.get(url)
-        opportunities = page.search('.search-result')
+        opportunities = page.search(".search-result")
 
         opportunities.map { |o| opportunity_from_search_result(o) }
       end
@@ -46,42 +46,42 @@ module MarketplaceOpportunityScraper
       private
 
       def opportunity_from_id(id)
-        url = BASE_URL + '/digital-outcomes-and-specialists/opportunities/' + id.to_s
+        url = BASE_URL + "/digital-outcomes-and-specialists/opportunities/" + id.to_s
         page = mechanize.get(url)
 
-        title = page.at('h1')
+        title = page.at("h1")
 
         attrs = {
           page: page,
           id: id,
           title: title.text.strip,
           url: url,
-          buyer: page.at('.govuk-caption-l').text,
-          location: text_from_label(page, 'Location'),
-          published: date_from_label(page, 'Published'),
-          question_deadline: date_from_label(page, 'Deadline for asking questions'),
-          closing: date_from_label(page, 'Closing date for applications'),
-          expected_start_date: date_from_label(page, 'Latest start date'),
-          description: text_from_label(page, 'Summary of the work')
+          buyer: page.at(".govuk-caption-l").text,
+          location: text_from_label(page, "Location"),
+          published: date_from_label(page, "Published"),
+          question_deadline: date_from_label(page, "Deadline for asking questions"),
+          closing: date_from_label(page, "Closing date for applications"),
+          expected_start_date: date_from_label(page, "Latest start date"),
+          description: text_from_label(page, "Summary of the work")
         }
 
         new(attrs)
       end
 
       def opportunity_from_search_result(element)
-        title = element.at('.search-result-title')
-        url = BASE_URL + title.at('a').attributes['href'].value
+        title = element.at(".search-result-title")
+        url = BASE_URL + title.at("a").attributes["href"].value
 
-        opportunity_from_id(url.split('/').last.to_i)
+        opportunity_from_id(url.split("/").last.to_i)
       end
     end
 
     def budget
-      text_from_label('Budget range')
+      text_from_label("Budget range")
     end
 
     def skills
-      list = find_by_label('Essential skills and experience').search('li')
+      list = find_by_label("Essential skills and experience").search("li")
       list.map { |li| li.text.strip }
     end
 
@@ -94,20 +94,20 @@ module MarketplaceOpportunityScraper
     end
 
     def status
-      return 'open' if banner.nil?
-      return 'cancelled' if banner.text =~ /cancelled/
-      return 'awaiting' if banner.text =~ /closed for applications/
+      return "open" if banner.nil?
+      return "cancelled" if /cancelled/.match?(banner.text)
+      return "awaiting" if /closed for applications/.match?(banner.text)
 
-      'awarded'
+      "awarded"
     end
 
     def awarded_to
       return if banner.nil?
 
-      text = banner.at('h2').text
-      return unless text =~ /Awarded to/
+      text = banner.at("h2").text
+      return unless /Awarded to/.match?(text)
 
-      text.gsub('Awarded to ', '').strip
+      text.gsub("Awarded to ", "").strip
     end
 
     def page
@@ -117,7 +117,7 @@ module MarketplaceOpportunityScraper
     private
 
     def banner
-      @banner ||= page.at('.banner-temporary-message-without-action')
+      @banner ||= page.at(".banner-temporary-message-without-action")
     end
   end
 end

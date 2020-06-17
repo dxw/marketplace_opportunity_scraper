@@ -7,8 +7,8 @@ module MarketplaceOpportunityScraper
     def build_url(type, status)
       check_type(type)
       check_status(status)
-      url = BASE_URL + '/digital-outcomes-and-specialists/opportunities'
-      h = { lot: type, statusOpenClosed: status }.reject { |_k, v| v.nil? }
+      url = BASE_URL + "/digital-outcomes-and-specialists/opportunities"
+      h = {lot: type, statusOpenClosed: status}.reject { |_k, v| v.nil? }
       params = URI.encode_www_form(h)
       "#{url}?#{params}"
     end
@@ -17,15 +17,15 @@ module MarketplaceOpportunityScraper
       return if param.nil?
 
       valid_array = send("valid_#{type}")
-      raise(ArgumentError, "#{param} is not a valid #{type}. Must be one of #{valid_array.join(' ')}") unless valid_array.include?(param)
+      raise(ArgumentError, "#{param} is not a valid #{type}. Must be one of #{valid_array.join(" ")}") unless valid_array.include?(param)
     end
 
     def check_type(type)
-      check_params(type, 'types')
+      check_params(type, "types")
     end
 
     def check_status(status)
-      check_params(status, 'statuses')
+      check_params(status, "statuses")
     end
 
     def valid_types
