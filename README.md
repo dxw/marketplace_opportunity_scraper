@@ -1,4 +1,4 @@
-[![CircleCI Status](https://img.shields.io/circleci/project/github/dxw/marketplace_opportunity_scraper.svg?style=flat-square)](https://circleci.com/gh/dxw/marketplace_opportunity_scraper)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fdxw%2Fmarketplace_opportunity_scraper%2Fbadge&style=flat)](https://actions-badge.atrox.dev/dxw/marketplace_opportunity_scraper/goto)
 [![Gem Version](http://img.shields.io/gem/v/marketplace_opportunity_scraper.svg?style=flat-square)](https://rubygems.org/gems/marketplace_opportunity_scraper)
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://mit-license.org/)
 
