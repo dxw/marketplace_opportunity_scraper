@@ -30,7 +30,7 @@ module MarketplaceOpportunityScraper
       def all(type: nil, status: "open")
         url = build_url(type, status)
         page = mechanize.get(url)
-        opportunities = page.search(".search-result")
+        opportunities = page.search(".app-search-result")
 
         opportunities.map { |o| opportunity_from_search_result(o) }
       end
@@ -69,7 +69,7 @@ module MarketplaceOpportunityScraper
       end
 
       def opportunity_from_search_result(element)
-        title = element.at(".search-result-title")
+        title = element.at("h2")
         url = BASE_URL + title.at("a").attributes["href"].value
 
         opportunity_from_id(url.split("/").last.to_i)
@@ -117,7 +117,7 @@ module MarketplaceOpportunityScraper
     private
 
     def banner
-      @banner ||= page.at(".banner-temporary-message-without-action")
+      @banner ||= page.at(".dm-banner")
     end
   end
 end

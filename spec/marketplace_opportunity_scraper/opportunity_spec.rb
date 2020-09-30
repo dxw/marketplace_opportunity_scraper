@@ -9,20 +9,20 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
     it "returns all open opportunities" do
       expect(subject.first).to be_a(described_class)
-      expect(subject.count).to eq(29)
+      expect(subject.count).to eq(27)
     end
 
     it "gets the correct opportunity data" do
-      expect(opportunity.id).to eq(12544)
-      expect(opportunity.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/12544")
-      expect(opportunity.title).to eq("Principal Developer/ Technical Lead - Law Enforcement and Security for Data Services & Analytics")
-      expect(opportunity.buyer).to eq("Data Service and Analytics (DSA), Home Office")
-      expect(opportunity.location).to eq("London")
-      expect(opportunity.published).to eq(Date.parse("2020-06-17"))
-      expect(opportunity.question_deadline).to eq(Date.parse("2020-06-24"))
-      expect(opportunity.closing).to eq(Date.parse("2020-07-01"))
-      expect(opportunity.expected_start_date).to eq(Date.parse("2020-07-13"))
-      expect(opportunity.description).to match(/senior colleagues to design and build/)
+      expect(opportunity.id).to eq(13198)
+      expect(opportunity.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/13198")
+      expect(opportunity.title).to eq("CCT934-MOD FHRS Delivery Partner for Oracle SaaS & PaaS Technical, Business & Service Change")
+      expect(opportunity.buyer).to eq("Ministry of Defence")
+      expect(opportunity.location).to eq("South West England")
+      expect(opportunity.published).to eq(Date.parse("2020-09-30"))
+      expect(opportunity.question_deadline).to eq(Date.parse("2020-10-07"))
+      expect(opportunity.closing).to eq(Date.parse("2020-10-14"))
+      expect(opportunity.expected_start_date).to eq(Date.parse("2020-12-14"))
+      expect(opportunity.description).to match(/Business and Service Change/)
     end
 
     context "when type is specified" do
@@ -31,14 +31,14 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
       it "returns the correct opportunities" do
         expect(subject.first).to be_a(described_class)
-        expect(subject.count).to eq(15)
+        expect(subject.count).to eq(20)
       end
 
       it "gets data that is not on the homepage" do
-        expect(opportunity.budget).to match(/£16,000/)
-        expect(opportunity.skills.count).to eq(9)
-        expect(opportunity.skills.first).to eq("Possess demonstrable experience of conducting market testing, user research activities and outputs with a range of audiences and stakeholders.")
-        expect(opportunity.skills.last).to eq("Demonstrate experience of presenting user-friendly research to different audiences, including those with low technical expertise.")
+        expect(opportunity.budget).to match(/£5,280,319/)
+        expect(opportunity.skills.count).to eq(17)
+        expect(opportunity.skills.first).to eq("Experience, within the last 4 years, of engineering Oracle based SaaS/PaaS solutions that align to the business requirements. (5pts)")
+        expect(opportunity.skills.last).to eq("Experience of learning from others and benchmarking to improve the delivery of the project outputs/outcomes. (4pts)")
       end
     end
 
@@ -55,7 +55,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
 
       it "returns the correct opportunities" do
         expect(subject.first).to be_a(described_class)
-        expect(subject.count).to eq(100)
+        expect(subject.count).to eq(30)
       end
     end
 
@@ -76,7 +76,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
       expect(subject.url).to eq("https://www.digitalmarketplace.service.gov.uk/digital-outcomes-and-specialists/opportunities/12500")
       expect(subject.title).to eq("Repairs Online - Technical Alpha")
       expect(subject.buyer).to eq("City of Lincoln Council")
-      expect(subject.location).to eq("No specific location, eg they can work remotely")
+      expect(subject.location).to eq("No specific location, for example they can work remotely")
       expect(subject.published).to eq(Date.parse("2020-06-15"))
       expect(subject.question_deadline).to eq(Date.parse("2020-06-22"))
       expect(subject.closing).to eq(Date.parse("2020-06-29"))
@@ -92,13 +92,13 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
     let(:status) { opportunity.status }
 
     context "when an opportunity is still open" do
-      let(:opportunity) { described_class.find(12543) }
+      let(:opportunity) { described_class.find(13198) }
 
       it { expect(status).to eq("open") }
     end
 
     context "when an opportunity is awaiting" do
-      let(:opportunity) { described_class.find(12206) }
+      let(:opportunity) { described_class.find(13104) }
 
       it { expect(status).to eq("awaiting") }
     end
@@ -132,7 +132,7 @@ describe MarketplaceOpportunityScraper::Opportunity, :vcr do
     end
 
     context "when an opportunity is still open" do
-      let(:opportunity) { described_class.find(9482) }
+      let(:opportunity) { described_class.find(13198) }
 
       it { expect(awarded_to).to eq(nil) }
     end
