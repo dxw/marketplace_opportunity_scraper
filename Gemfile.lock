@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    marketplace_opportunity_scraper (0.2.1)
+    marketplace_opportunity_scraper (0.2.2)
       mechanize (~> 2.7)
 
 GEM
